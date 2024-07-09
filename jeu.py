@@ -323,7 +323,7 @@ while running:
     draw_scores(screen, player_score, enemy_score, width, height)
 
     if victory:
-        img = pygame.image.load("jeuPython/victory.gif")
+        img = pygame.image.load("jeuPython/victory.jpg")
         img = pygame.transform.scale(img, (width, height))
         screen.blit(img, (0, 0))
         draw_victory_message(screen, victory_message, width, height)
