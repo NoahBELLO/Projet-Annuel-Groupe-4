@@ -11,14 +11,14 @@ width, height = size * tile_size, size * tile_size
 interface_height = 100  # Hauteur supplémentaire pour l'interface
 
 # Couleurs
-PASSABLE_COLOR = (200, 200, 200)        # Gris clair pour les cases passables
-PLAYER_COLOR = (0, 0, 255)              # Bleu pour le joueur
-PLAYER_COLOR_LIGHT = (100, 100, 255)    # Bleu clair pour le joueur capable de bouger
-ENEMY_COLOR = (255, 0, 0)               # Rouge pour les ennemis
-ENEMY_COLOR_LIGHT = (255, 100, 100)     # Rouge clair pour les ennemis capables de bouger
+PASSABLE_COLOR = (220, 220, 221)        # Gris clair pour les cases passables
+PLAYER_COLOR = (56, 111, 164)              # Bleu pour le joueur
+PLAYER_COLOR_LIGHT = (89, 165, 216)    # Bleu clair pour le joueur capable de bouger
+ENEMY_COLOR = (158, 0, 89)               # Rouge bordeau pour les ennemis
+ENEMY_COLOR_LIGHT = (216, 17, 89)     # Rouge pour les ennemis capables de bouger
 SELECTED_COLOR = (0, 255, 0)            # Vert pour la sélection
-OBJECTIVE_MAJOR_COLOR = (255, 255, 0)   # Jaune pour objectif majeur
-OBJECTIVE_MINOR_COLOR = (255, 215, 0)   # Doré pour objectif mineur
+OBJECTIVE_MAJOR_COLOR = (106, 76, 147)   # Violet pour objectif majeur
+OBJECTIVE_MINOR_COLOR = (228, 160, 249)   # Violet lilas pour objectif mineur
 
 # Classe pour les unités
 class Unit:
@@ -323,6 +323,9 @@ while running:
     draw_scores(screen, player_score, enemy_score, width, height)
 
     if victory:
+        img = pygame.image.load("jeuPython/victory.gif")
+        img = pygame.transform.scale(img, (width, height))
+        screen.blit(img, (0, 0))
         draw_victory_message(screen, victory_message, width, height)
         pygame.display.flip()
         pygame.time.wait(5000)
