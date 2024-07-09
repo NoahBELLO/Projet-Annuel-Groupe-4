@@ -221,8 +221,9 @@ def draw_victory_message(screen, message, width, height):
     victory_img = font.render(message, True, (255, 255, 255))
     screen.blit(victory_img, (width // 2 - 100, height // 2 - 24))
 
-def enemy_turn(units, objectives):
-    print("Tour IA")
+def ia_turn(units, objectives):
+    print("Tour IA\n", units, objectives)
+    
 # Configuration de la fenêtre
 screen = pygame.display.set_mode((width, height + interface_height))
 pygame.display.set_caption("Carte de 20x20 avec unités et déplacement")
@@ -310,7 +311,7 @@ while running:
                 victory = True
                 victory_message = "Victoire Joueur!"
             if not player_turn:
-                enemy_turn()
+                ia_turn(units, objectives)
                 
             pygame.display.flip()
 
