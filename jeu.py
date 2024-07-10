@@ -221,6 +221,7 @@ def draw_victory_message(screen, message, width, height):
     victory_img = font.render(message, True, (255, 255, 255))
     screen.blit(victory_img, (width // 2 - 100, height // 2 - 24))
 
+# Afficher le minuteur pour le temps de réflexion
 def dessiner_minuteur(ecran, temps_restant):
     """Affiche le minuteur du temps restant."""
     font = pygame.font.SysFont(None, 30)
@@ -300,6 +301,7 @@ while running:
                                 selected_unit.move(grid_x, grid_y)
                                 selected_unit.selected = False
                                 selected_unit = None
+                                
         # Calcul du temps écoulé depuis le début du tour
         temps_actuel = pygame.time.get_ticks() // 1000
         temps_ecoule = temps_actuel - temps_debut_tour
