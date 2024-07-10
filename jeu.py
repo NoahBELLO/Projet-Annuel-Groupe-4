@@ -181,9 +181,9 @@ def draw_end_turn_button(screen, width, height, interface_height):
     """Affiche le bouton de fin de tour."""
     font = pygame.font.SysFont(None, 36)
     text = font.render("Terminé", True, (255, 255, 255))
-    button_rect = pygame.Rect(width // 2 - 50, height, 100, interface_height - 10)
+    button_rect = pygame.Rect(width // 2 - 130, height, 270, interface_height)
     pygame.draw.rect(screen, (100, 100, 100), button_rect)
-    screen.blit(text, (width // 2 - 50 + 10, height + 10))
+    screen.blit(text, (width // 2 - 40, height + 60))
 
 # Vérifier si le bouton de changement de tour est cliqué
 def end_turn_button_clicked(mouse_pos, width, height, interface_height):
@@ -219,7 +219,7 @@ def draw_victory_message(screen, message, width, height):
     """Affiche le message de victoire."""
     font = pygame.font.SysFont(None, 48)
     victory_img = font.render(message, True, (255, 255, 255))
-    screen.blit(victory_img, (width // 2 - 100, height // 2 - 24))
+    screen.blit(victory_img, (width // 2 - 130, height // 2 + 200))
 
 # Configuration de la fenêtre
 screen = pygame.display.set_mode((width, height + interface_height))
