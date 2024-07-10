@@ -11,14 +11,14 @@ width, height = size * tile_size, size * tile_size
 interface_height = 100  # Hauteur supplémentaire pour l'interface
 
 # Couleurs
-PASSABLE_COLOR = (200, 200, 200)        # Gris clair pour les cases passables
-PLAYER_COLOR = (0, 0, 255)              # Bleu pour le joueur
-PLAYER_COLOR_LIGHT = (100, 100, 255)    # Bleu clair pour le joueur capable de bouger
-ENEMY_COLOR = (255, 0, 0)               # Rouge pour les ennemis
-ENEMY_COLOR_LIGHT = (255, 100, 100)     # Rouge clair pour les ennemis capables de bouger
+PASSABLE_COLOR = (220, 220, 221)        # Gris clair pour les cases passables
+PLAYER_COLOR = (56, 111, 164)              # Bleu pour le joueur
+PLAYER_COLOR_LIGHT = (89, 165, 216)    # Bleu clair pour le joueur capable de bouger
+ENEMY_COLOR = (158, 0, 89)               # Rouge bordeau pour les ennemis
+ENEMY_COLOR_LIGHT = (216, 17, 89)     # Rouge pour les ennemis capables de bouger
 SELECTED_COLOR = (0, 255, 0)            # Vert pour la sélection
-OBJECTIVE_MAJOR_COLOR = (255, 255, 0)   # Jaune pour objectif majeur
-OBJECTIVE_MINOR_COLOR = (255, 215, 0)   # Doré pour objectif mineur
+OBJECTIVE_MAJOR_COLOR = (106, 76, 147)   # Violet pour objectif majeur
+OBJECTIVE_MINOR_COLOR = (228, 160, 249)   # Violet lilas pour objectif mineur
 
 # Classe pour les unités
 class Unit:
@@ -174,16 +174,16 @@ def draw_turn_indicator(screen, player_turn):
     font = pygame.font.SysFont(None, 36)
     text = "Joueur" if player_turn else "Ennemi"
     img = font.render(text, True, (255, 255, 255))
-    screen.blit(img, (10, 10))
+    screen.blit(img, (260, 10))
 
 # Afficher le bouton de changement de tour
 def draw_end_turn_button(screen, width, height, interface_height):
     """Affiche le bouton de fin de tour."""
     font = pygame.font.SysFont(None, 36)
     text = font.render("Terminé", True, (255, 255, 255))
-    button_rect = pygame.Rect(width // 2 - 50, height, 100, interface_height - 10)
+    button_rect = pygame.Rect(width // 2 - 130, height, 270, interface_height)
     pygame.draw.rect(screen, (100, 100, 100), button_rect)
-    screen.blit(text, (width // 2 - 50 + 10, height + 10))
+    screen.blit(text, (width // 2 - 40, height + 60))
 
 # Vérifier si le bouton de changement de tour est cliqué
 def end_turn_button_clicked(mouse_pos, width, height, interface_height):
@@ -219,7 +219,7 @@ def draw_victory_message(screen, message, width, height):
     """Affiche le message de victoire."""
     font = pygame.font.SysFont(None, 48)
     victory_img = font.render(message, True, (255, 255, 255))
-    screen.blit(victory_img, (width // 2 - 100, height // 2 - 24))
+    screen.blit(victory_img, (width // 2 - 130, height // 2 + 200))
 
 # Afficher le minuteur pour le temps de réflexion
 def dessiner_minuteur(ecran, temps_restant):
@@ -350,6 +350,10 @@ while running:
     dessiner_minuteur(screen, temps_reflexion - temps_ecoule)
 
     if victory:
+        # Ajout d'une image pour le cas de la victoire
+        img = pygame.image.load("jeuPython/victory.jpg") # Chargement de l'image feu artifice
+        img = pygame.transform.scale(img, (width, height)) # Dimension de l'image
+        screen.blit(img, (0, 0)) # Insertion de l'image dans l'écran jeu
         draw_victory_message(screen, victory_message, width, height)
         pygame.display.flip()
         pygame.time.wait(5000)
