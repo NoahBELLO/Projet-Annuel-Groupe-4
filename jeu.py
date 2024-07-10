@@ -174,7 +174,7 @@ def draw_turn_indicator(screen, player_turn):
     font = pygame.font.SysFont(None, 36)
     text = "Joueur" if player_turn else "Ennemi"
     img = font.render(text, True, (255, 255, 255))
-    screen.blit(img, (10, 10))
+    screen.blit(img, (260, 10))
 
 # Afficher le bouton de changement de tour
 def draw_end_turn_button(screen, width, height, interface_height):
