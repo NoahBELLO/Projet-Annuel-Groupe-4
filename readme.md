@@ -4,4 +4,6 @@ Installation : Il faut installer pygame
 
 Auteur du projet : Noah BELLO, Samir LADJADJ, Adeline MONTHE
 
+Fusion de la branche : ChangementDeStyle
+
 Remerciements : Valentin DUFLOT, pour le code du jeu sans l'IA
