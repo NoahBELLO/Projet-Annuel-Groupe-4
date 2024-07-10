@@ -8,7 +8,7 @@ pygame.init()
 tile_size = 30
 size = 20
 width, height = size * tile_size, size * tile_size
-interface_height = 100  # Hauteur supplémentaire pour l'interface
+interface_height = 150  # Hauteur supplémentaire pour l'interface
 
 # Couleurs
 PASSABLE_COLOR = (220, 220, 221)        # Gris clair pour les cases passables
@@ -157,7 +157,6 @@ class IA:
 # Générer la carte
 def generate_map(size):
     """Génère une carte de taille spécifiée."""
-    print([[1 for _ in range(size)] for _ in range(size)])
     return [[1 for _ in range(size)] for _ in range(size)]
 
 # Afficher la carte
@@ -401,7 +400,6 @@ def creation_jeu(param_ia):
 
                 temps_debut_tour = pygame.time.get_ticks() // 1000
                 pygame.display.flip()
-                #pygame.time.wait(2000)
 
         screen.fill((0, 0, 0))
         draw_map(screen, game_map, tile_size)
@@ -463,4 +461,4 @@ while running:
 
     pygame.display.flip()
 
-  pygame.quit()
+pygame.quit()
