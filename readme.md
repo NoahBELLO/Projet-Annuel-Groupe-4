@@ -6,4 +6,4 @@ Cette branche sert à savoir où placer le code qui permettra de faire jouer l'i
 Objectif :
 Fonction qui permet de dire quand l'ia est lancée, et code de condition if.
 
-Auteur : Mariam MAHAMAT
+Auteur : Noah BELLO
