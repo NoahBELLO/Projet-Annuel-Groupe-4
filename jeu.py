@@ -102,14 +102,29 @@ class IA:
 
     # Fonction qui permet de déplacer l'IA
     def mouvement_ia(self, unite, toutes_les_unites, objectifs):
+        """Fait bouger l'unité de l'IA."""
         if not unite.moved:
-            # Vérifier si l'unité est sur un objectif majeur ou un objectif mineur
-            sur_objectif_majeur = any(obj['x'] == unite.x and obj['y'] == unite.y and obj['type'] == 'MAJOR' for obj in objectifs)
-            sur_objectif_mineur = any(obj['x'] == unite.x and obj['y'] == unite.y and obj['type'] == 'MINOR' for obj in objectifs)
+            # Vérifier si l'unité est sur un objectif majeur ou un objectif mineur            
+            sur_objectif_majeur = False # Initialisation du drapeau pour l'objectif majeur
+            for obj in objectifs:
+                if obj['x'] == unite.x and obj['y'] == unite.y and obj['type'] == 'MAJOR':
+                    sur_objectif_majeur = True
+                    break  # Sortir de la boucle dès qu'une correspondance est trouvée
+            
+            sur_objectif_mineur = False # Initialisation du drapeau pour l'objectif mineur
+            for obj in objectifs:
+                if obj['x'] == unite.x and obj['y'] == unite.y and obj['type'] == 'MINOR':
+                    sur_objectif_mineur = True
+                    break  # Sortir de la boucle dès qu'une correspondance est trouvée
             
             if (not sur_objectif_majeur) and (not sur_objectif_mineur):
                 # Liste des cases adjacentes
-                cases_adjacentes = [(unite.x + dx, unite.y + dy) for dx in range(-1, 2) for dy in range(-1, 2) if not (dx == 0 and dy == 0)]
+                cases_adjacentes = []
+                for dx in range(-1, 2):
+                    for dy in range(-1, 2):
+                        if not (dx == 0 and dy == 0):
+                            cases_adjacentes.append((unite.x + dx, unite.y + dy))
+
                 random.shuffle(cases_adjacentes)
                 
                 for case in cases_adjacentes:
