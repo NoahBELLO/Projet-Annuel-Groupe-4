@@ -1,7 +1,7 @@
-Titre du Projet : Projet de jeu de type militaire contre une IA
+Nom de la branche : TempsDeRéflexion
 
-Installation : Il faut installer pygame
+Description : 
+Cette branche sert à créer un minuteur qui laisse 15 secondes de réflexion pour jouer son tour.
 
-Auteur du projet : Noah BELLO, Samir LADJADJ, Franck BOGNING NANDA, Adeline MONTHE, Mariam MAHAMAT
-
-Remerciements : Valentin DUFLOT, pour le code du jeu sans l'IA
+Objectif :
+Nous avons créer un fonction d'affichage pour voir le temps de réflexion qui reste, changement automatique du joueur si le temps est écoulé, et le temps de réflexion se réinitialise.
