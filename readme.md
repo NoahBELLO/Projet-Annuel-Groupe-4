@@ -6,4 +6,4 @@ Cette branche a pour but de créer un menu pour choisir de jouer contre un autre
 Objectif :
 Nous avons du coup mis le code du jeu dans une fonction qu'on appelle dans le code du menu.
 
-Auteur : Samir LADJADJ
+Auteur : Adeline MONTHE
