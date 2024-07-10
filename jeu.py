@@ -224,8 +224,8 @@ def draw_victory_message(screen, message, width, height):
 def dessiner_minuteur(ecran, temps_restant):
     """Affiche le minuteur du temps restant."""
     font = pygame.font.SysFont(None, 30)
-    texte = font.render(f"Temps reflexion: {temps_restant // 60}:{temps_restant % 60:02}", True, (0, 0, 0))
-    rect = texte.get_rect(topright=(width - 10, 10))
+    texte = font.render(f"Temps jeu: {temps_restant // 60}:{temps_restant % 60:02}", True, (0, 0, 0))
+    rect = texte.get_rect(topright=(width - 50, 10))
     ecran.blit(texte, rect)
 
 # Configuration de la fenêtre
