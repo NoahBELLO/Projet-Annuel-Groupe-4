@@ -1,9 +1,11 @@
-Nom de la branche : MenuEntreJoueurOuIA
+Titre du Projet : Projet de jeu de type militaire contre une IA
 
-Description :
-Cette branche a pour but de créer un menu pour choisir de jouer contre un autre joueur ou une ia
+Installation : Il faut installer pygame
 
-Objectif :
-Nous avons du coup mis le code du jeu dans une fonction qu'on appelle dans le code du menu.
+Auteur du projet : Noah BELLO, Samir LADJADJ, Adeline MONTHE
 
-Auteur : Adeline MONTHE
+Fusion de la branche : ChangementDeStyle
+
+Fusion de la branche : MenuEntreJoueurOuIA
+
+Remerciements : Valentin DUFLOT, pour le code du jeu sans l'IA
