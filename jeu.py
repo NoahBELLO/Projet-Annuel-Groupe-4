@@ -221,7 +221,7 @@ def draw_victory_message(screen, message, width, height):
     victory_img = font.render(message, True, (255, 255, 255))
     screen.blit(victory_img, (width // 2 - 100, height // 2 - 24))
     
-def create_jeu():
+def creation_jeu():
     # Configuration de la fenêtre
     screen = pygame.display.set_mode((width, height + interface_height))
     pygame.display.set_caption("Carte de 20x20 avec unités et déplacement")
@@ -348,9 +348,9 @@ while running:
                 rect = text.get_rect(center=(125, 50  + i * 60))
                 if rect.collidepoint(x, y):
                     if i == 0:
-                        create_jeu()
+                        creation_jeu()
                     elif i == 1:
-                        create_jeu()
+                        creation_jeu()
                     running = False
 
     for i, option in enumerate(menu_options):
