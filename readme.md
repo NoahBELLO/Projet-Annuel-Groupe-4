@@ -20,3 +20,5 @@ Cette méthode recherche des unités joueur à portée et attaque la première u
 
 - mouvement_ia :
 Cette méthode fait déplacer les unités contrôler par l'IA vers une case adjacente (déplacement horizontale, verticale, et diagonale) si l'unité n'est pas sur un objectif majeur ou mineur. La méthode choisit aléatoirement parmi les cases adjacentes non occupées par d'autres unités.
+
+Auteur : Noah BELLO
