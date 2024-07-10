@@ -220,7 +220,8 @@ def draw_victory_message(screen, message, width, height):
     font = pygame.font.SysFont(None, 48)
     victory_img = font.render(message, True, (255, 255, 255))
     screen.blit(victory_img, (width // 2 - 100, height // 2 - 24))
-    
+
+#Création de la fonnction pour lancer le jeu  
 def creation_jeu(param_ia):
     # Configuration de la fenêtre
     screen = pygame.display.set_mode((width, height + interface_height))
@@ -330,6 +331,7 @@ def creation_jeu(param_ia):
 
     pygame.quit()
 
+#Lancement de la fênetre Menu
 screen = pygame.display.set_mode((250, 100 + 50))
 pygame.display.set_caption("Menu Principal")
 font = pygame.font.SysFont("Times New Roman", 32)
@@ -348,9 +350,9 @@ while running:
                 rect = text.get_rect(center=(125, 50  + i * 60))
                 if rect.collidepoint(x, y):
                     if i == 0:
-                        creation_jeu(False)
+                        creation_jeu(False) #Lancement du jeu dans le cas d'un Joueur contre Joueur
                     elif i == 1:
-                        creation_jeu(True)
+                        creation_jeu(True) #Lancement du jeu dans le cas d'un Joueur contre IA
                     running = False
 
     for i, option in enumerate(menu_options):
