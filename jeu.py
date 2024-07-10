@@ -221,6 +221,13 @@ def draw_victory_message(screen, message, width, height):
     victory_img = font.render(message, True, (255, 255, 255))
     screen.blit(victory_img, (width // 2 - 100, height // 2 - 24))
 
+def dessiner_minuteur(ecran, temps_restant):
+    """Affiche le minuteur du temps restant."""
+    font = pygame.font.SysFont(None, 30)
+    texte = font.render(f"Temps reflexion: {temps_restant // 60}:{temps_restant % 60:02}", True, (255, 255, 255))
+    rect = texte.get_rect(topright=(width - 10, 10))
+    ecran.blit(texte, rect)
+
 # Configuration de la fenêtre
 screen = pygame.display.set_mode((width, height + interface_height))
 pygame.display.set_caption("Carte de 20x20 avec unités et déplacement")
@@ -242,9 +249,18 @@ enemy_score = 0
 victory = False
 victory_message = ""
 
+# Initialisation du temps de réflexion
+temps_reflexion = 15 # Durée de réflexion en secondes pour chaque joueur
+temps_debut_tour = pygame.time.get_ticks() // 1000
+clock = pygame.time.Clock()
+
 # Boucle principale du jeu
 running = True
 while running:
+    FPS = 30  # Nombre d'images par seconde
+    clock.tick(FPS)
+    temps_actuel = pygame.time.get_ticks() // 1000  # Temps écoulé en secondes
+    
     if not victory:
         unit_moved = False
         for event in pygame.event.get():
@@ -284,8 +300,11 @@ while running:
                                 selected_unit.move(grid_x, grid_y)
                                 selected_unit.selected = False
                                 selected_unit = None
-
-        if unit_moved:
+        # Calcul du temps écoulé depuis le début du tour
+        temps_actuel = pygame.time.get_ticks() // 1000
+        temps_ecoule = temps_actuel - temps_debut_tour
+        
+        if unit_moved or temps_ecoule >= temps_reflexion:
             for unit in units_to_move:
                 unit.moved = False  # Réinitialiser l'indicateur de mouvement
                 unit.attacked_this_turn = False  # Réinitialiser l'indicateur d'attaque
@@ -307,7 +326,8 @@ while running:
             elif not any(unit.color == ENEMY_COLOR for unit in units):
                 victory = True
                 victory_message = "Victoire Joueur!"
-
+                
+            temps_debut_tour = pygame.time.get_ticks() // 1000
             pygame.display.flip()
 
     screen.fill((0, 0, 0))
@@ -321,6 +341,7 @@ while running:
     draw_end_turn_button(screen, width, height, interface_height)
     draw_unit_attributes(screen, selected_unit, width, height, interface_height)
     draw_scores(screen, player_score, enemy_score, width, height)
+    dessiner_minuteur(screen, temps_reflexion - temps_ecoule)
 
     if victory:
         draw_victory_message(screen, victory_message, width, height)
