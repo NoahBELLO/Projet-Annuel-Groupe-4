@@ -10,4 +10,6 @@ Fusion de la branche : MenuEntreJoueurOuIA
 
 Fusion de la branche : TempsDeReflexion
 
+Fusion de la branche : CodeIA
+
 Remerciements : Valentin DUFLOT, pour le code du jeu sans l'IA

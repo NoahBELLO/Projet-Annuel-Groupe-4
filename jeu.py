@@ -95,6 +95,65 @@ class Unit:
         """Retourne le symbole de l'unité."""
         return "U"
 
+#Classe pour l'ia 
+class IA:
+    def __init__(self, couleur):
+        self.couleur = couleur
+
+    # Fonction qui permet de déplacer l'IA
+    def mouvement_ia(self, unite, toutes_les_unites, objectifs):
+        """Fait bouger l'unité de l'IA."""
+        if not unite.moved:
+            # Vérifier si l'unité est sur un objectif majeur ou un objectif mineur            
+            sur_objectif_majeur = False # Initialisation du drapeau pour l'objectif majeur
+            for obj in objectifs:
+                if obj['x'] == unite.x and obj['y'] == unite.y and obj['type'] == 'MAJOR':
+                    sur_objectif_majeur = True
+                    break  # Sortir de la boucle dès qu'une correspondance est trouvée
+            
+            sur_objectif_mineur = False # Initialisation du drapeau pour l'objectif mineur
+            for obj in objectifs:
+                if obj['x'] == unite.x and obj['y'] == unite.y and obj['type'] == 'MINOR':
+                    sur_objectif_mineur = True
+                    break  # Sortir de la boucle dès qu'une correspondance est trouvée
+            
+            if (not sur_objectif_majeur) and (not sur_objectif_mineur):
+                # Liste des cases adjacentes
+                cases_adjacentes = []
+                for dx in range(-1, 2):
+                    for dy in range(-1, 2):
+                        if not (dx == 0 and dy == 0):
+                            cases_adjacentes.append((unite.x + dx, unite.y + dy))
+
+                random.shuffle(cases_adjacentes)
+                
+                for case in cases_adjacentes:
+                    x, y = case
+                    if (0 <= x < size) and (0 <= y < size) and not any(u.x == x and u.y == y for u in toutes_les_unites):
+                        unite.move(x, y)
+                        break
+
+    # Fonction qui permet à l'IA d'attaquer
+    def attaque_ia(self, unite, toutes_les_unites, objectifs):
+        if not unite.attacked_this_turn:
+            # Recherche des unités ennemies à portée
+            enemies_in_range = [u for u in toutes_les_unites if u.color != unite.color and unite.can_move(u.x, u.y)]
+            
+            # Attaquer une unité ennemie si possible
+            for enemy in enemies_in_range:
+                unite.attack(enemy, toutes_les_unites, objectifs)
+                return
+
+    # Fonction qui permet d'effectuer le tour de l'IA, si il doit attaquer ou si il doit se déplacer
+    def tour_ia(self, toutes_les_unites, objectifs):
+        """Contrôle le tour de l'IA."""
+        for unite in toutes_les_unites:
+            if unite.color == ENEMY_COLOR:
+                if not unite.attacked_this_turn:
+                    self.attaque_ia(unite, toutes_les_unites, objectifs)
+                if (not unite.moved) and (not unite.attacked_this_turn):
+                    self.mouvement_ia(unite, toutes_les_unites, objectifs)
+                    
 # Générer la carte
 def generate_map(size):
     """Génère une carte de taille spécifiée."""
@@ -232,12 +291,7 @@ def dessiner_minuteur(ecran, temps_restant):
         texte = font.render(f"Temps jeu: 00:0{temps_restant}", True, (0, 0, 0))
     rect = texte.get_rect(topright=(width - 50, 10))
     ecran.blit(texte, rect)
-
-# Configuration de la fenêtre
-screen = pygame.display.set_mode((width, height + interface_height))
-pygame.display.set_caption("Carte de 20x20 avec unités et déplacement")
-
-#Création de la fonnction pour lancer le jeu  
+    
 def creation_jeu(param_ia):
     # Configuration de la fenêtre
     screen = pygame.display.set_mode((width, height + interface_height))
@@ -260,8 +314,8 @@ def creation_jeu(param_ia):
     victory = False
     victory_message = ""
 
-    # Initialisation du temps de réflexion
-    temps_reflexion = 15 # Durée de réflexion en secondes pour chaque joueur
+    # Initialisation du temps de jeu (par exemple, 600 secondes = 10 minutes)
+    temps_reflexion = 15  # Durée de réflexion en secondes pour chaque joueur
     temps_debut_tour = pygame.time.get_ticks() // 1000
     clock = pygame.time.Clock()
 
@@ -323,10 +377,10 @@ def creation_jeu(param_ia):
                 player_score += player_score_turn
                 enemy_score += enemy_score_turn
 
-                if player_score >= 50:
+                if player_score >= 500:
                     victory = True
                     victory_message = "Victoire Joueur!"
-                elif enemy_score >= 50:
+                elif enemy_score >= 500:
                     victory = True
                     victory_message = "Victoire Ennemi!"
                 elif not any(unit.color == PLAYER_COLOR for unit in units):
@@ -335,10 +389,19 @@ def creation_jeu(param_ia):
                 elif not any(unit.color == ENEMY_COLOR for unit in units):
                     victory = True
                     victory_message = "Victoire Joueur!"
+                
+                if param_ia:
+                    robot = IA(ENEMY_COLOR_LIGHT)
+                    if not player_turn:
+                        robot.tour_ia(units, objectives)
+                        player_turn = True
+                        for unit in units:
+                            unit.moved = False
+                            unit.attacked_this_turn = False
 
                 temps_debut_tour = pygame.time.get_ticks() // 1000
                 pygame.display.flip()
-                pygame.time.wait(2000)
+                #pygame.time.wait(2000)
 
         screen.fill((0, 0, 0))
         draw_map(screen, game_map, tile_size)
@@ -365,6 +428,7 @@ def creation_jeu(param_ia):
         pygame.display.flip()
 
     pygame.quit()
+
 
 #Lancement de la fênetre Menu
 screen = pygame.display.set_mode((250, 100 + 50))
@@ -399,4 +463,4 @@ while running:
 
     pygame.display.flip()
 
-pygame.quit()
+  pygame.quit()
