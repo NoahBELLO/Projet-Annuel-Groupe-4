@@ -6,4 +6,4 @@ Changement des couleurs du plateau, des unités joueur et ennemi, des objectifs.
 Objectif :
 Changement des constantes couleurs dans le code, changement des positions et tailles de certains éléments, ajout des lignes de codes qui permet de charger une image, et ajout de l'image dans le projet.
 
-Auteur : Adeline MONTHE, Mariam MAHAMAT
+Auteur : Franck BOGNING NANDA
