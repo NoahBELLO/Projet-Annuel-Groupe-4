@@ -323,9 +323,10 @@ while running:
     draw_scores(screen, player_score, enemy_score, width, height)
 
     if victory:
-        img = pygame.image.load("jeuPython/victory.jpg")
-        img = pygame.transform.scale(img, (width, height))
-        screen.blit(img, (0, 0))
+        # Ajout d'une image pour le cas de la victoire
+        img = pygame.image.load("jeuPython/victory.jpg") # Chargement de l'image feu artifice
+        img = pygame.transform.scale(img, (width, height)) # Dimension de l'image
+        screen.blit(img, (0, 0)) # Insertion de l'image dans l'écran jeu
         draw_victory_message(screen, victory_message, width, height)
         pygame.display.flip()
         pygame.time.wait(5000)
