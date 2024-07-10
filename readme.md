@@ -8,4 +8,6 @@ Fusion de la branche : ChangementDeStyle
 
 Fusion de la branche : MenuEntreJoueurOuIA
 
+Fusion de la branche : TempsDeReflexion
+
 Remerciements : Valentin DUFLOT, pour le code du jeu sans l'IA
