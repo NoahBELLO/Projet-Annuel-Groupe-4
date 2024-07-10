@@ -237,127 +237,165 @@ def dessiner_minuteur(ecran, temps_restant):
 screen = pygame.display.set_mode((width, height + interface_height))
 pygame.display.set_caption("Carte de 20x20 avec unités et déplacement")
 
-# Générer une carte de 20 par 20
-game_map = generate_map(size)
+#Création de la fonnction pour lancer le jeu  
+def creation_jeu(param_ia):
+    # Configuration de la fenêtre
+    screen = pygame.display.set_mode((width, height + interface_height))
+    pygame.display.set_caption("Carte de 20x20 avec unités et déplacement")
 
-# Générer les unités
-units = generate_units()
+    # Générer une carte de 20 par 20
+    game_map = generate_map(size)
 
-# Ajouter des objectifs
-objectives = add_objectives()
+    # Générer les unités
+    units = generate_units()
 
-selected_unit = None
-player_turn = True  # True pour le tour du joueur, False pour le tour de l'ennemi
-units_to_move = [unit for unit in units if (unit.color == PLAYER_COLOR if player_turn else unit.color == ENEMY_COLOR)]
-player_score = 0
-enemy_score = 0
-victory = False
-victory_message = ""
+    # Ajouter des objectifs
+    objectives = add_objectives()
 
-# Initialisation du temps de réflexion
-temps_reflexion = 15 # Durée de réflexion en secondes pour chaque joueur
-temps_debut_tour = pygame.time.get_ticks() // 1000
-clock = pygame.time.Clock()
+    selected_unit = None
+    player_turn = True  # True pour le tour du joueur, False pour le tour de l'ennemi
+    units_to_move = [unit for unit in units if (unit.color == PLAYER_COLOR if player_turn else unit.color == ENEMY_COLOR)]
+    player_score = 0
+    enemy_score = 0
+    victory = False
+    victory_message = ""
 
-# Boucle principale du jeu
-running = True
-while running:
-    FPS = 30  # Nombre d'images par seconde
-    clock.tick(FPS)
-    temps_actuel = pygame.time.get_ticks() // 1000  # Temps écoulé en secondes
-    
-    if not victory:
-        unit_moved = False
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    unit_moved = True
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if end_turn_button_clicked((x, y), width, height, interface_height):
-                    unit_moved = True
-                else:
-                    grid_x, grid_y = x // tile_size, y // tile_size
-                    if event.button == 1:  # Clic gauche pour sélectionner
-                        possible_units = [u for u in units if u.x == grid_x and u.y == grid_y and not u.moved and u.color == (PLAYER_COLOR if player_turn else ENEMY_COLOR)]
-                        if selected_unit in possible_units:
-                            current_index = possible_units.index(selected_unit)
-                            selected_unit.selected = False
-                            selected_unit = possible_units[(current_index + 1) % len(possible_units)]
-                        else:
-                            if selected_unit:
-                                selected_unit.selected = False
-                            if possible_units:
-                                selected_unit = possible_units[0]
-                        if selected_unit:
-                            selected_unit.selected = True
+    # Initialisation du temps de réflexion
+    temps_reflexion = 15 # Durée de réflexion en secondes pour chaque joueur
+    temps_debut_tour = pygame.time.get_ticks() // 1000
+    clock = pygame.time.Clock()
 
-                    elif event.button == 3:  # Clic droit pour déplacer ou attaquer
-                        if selected_unit and selected_unit.color == (PLAYER_COLOR if player_turn else ENEMY_COLOR):
-                            target_unit = [u for u in units if u.x == grid_x and u.y == grid_y and u.color != selected_unit.color]
-                            
-                            for cible in target_unit:
-                                selected_unit.attack(cible, units, objectives)
-                                
-                            if selected_unit.can_move(grid_x, grid_y):
-                                selected_unit.move(grid_x, grid_y)
-                                selected_unit.selected = False
-                                selected_unit = None
-                                
-        # Calcul du temps écoulé depuis le début du tour
-        temps_actuel = pygame.time.get_ticks() // 1000
-        temps_ecoule = temps_actuel - temps_debut_tour
+    # Boucle principale du jeu
+    running = True
+    while running:
+        FPS = 30  # Nombre d'images par seconde
+        clock.tick(FPS)
         
-        if unit_moved or temps_ecoule >= temps_reflexion:
-            for unit in units_to_move:
-                unit.moved = False  # Réinitialiser l'indicateur de mouvement
-                unit.attacked_this_turn = False  # Réinitialiser l'indicateur d'attaque
-            player_turn = not player_turn
-            units_to_move = [unit for unit in units if (unit.color == PLAYER_COLOR if player_turn else unit.color == ENEMY_COLOR)]
-            player_score_turn, enemy_score_turn = calculate_scores(units, objectives)
-            player_score += player_score_turn
-            enemy_score += enemy_score_turn
+        temps_actuel = pygame.time.get_ticks() // 1000  # Temps écoulé en secondes
+        
+        if not victory :
+            unit_moved = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if end_turn_button_clicked((x, y), width, height, interface_height):
+                        unit_moved = True
+                    else:
+                        grid_x, grid_y = x // tile_size, y // tile_size
+                        if event.button == 1:  # Clic gauche pour sélectionner
+                            possible_units = [u for u in units if u.x == grid_x and u.y == grid_y and not u.moved and u.color == (PLAYER_COLOR if player_turn else ENEMY_COLOR)]
+                            if selected_unit in possible_units:
+                                current_index = possible_units.index(selected_unit)
+                                selected_unit.selected = False
+                                selected_unit = possible_units[(current_index + 1) % len(possible_units)]
+                            else:
+                                if selected_unit:
+                                    selected_unit.selected = False
+                                if possible_units:
+                                    selected_unit = possible_units[0]
+                            if selected_unit:
+                                selected_unit.selected = True
+                        elif event.button == 3:  # Clic droit pour déplacer ou attaquer
+                            if selected_unit and selected_unit.color == (PLAYER_COLOR if player_turn else ENEMY_COLOR):
+                                target_unit = [u for u in units if u.x == grid_x and u.y == grid_y and u.color != selected_unit.color]
+                                
+                                for cible in target_unit:                                
+                                    selected_unit.attack(cible, units, objectives)
+                                    
+                                if selected_unit.can_move(grid_x, grid_y):
+                                    selected_unit.move(grid_x, grid_y)
+                                    selected_unit.selected = False
+                                    selected_unit = None
 
-            if player_score >= 50:
-                victory = True
-                victory_message = "Victoire Joueur!"
-            elif enemy_score >= 50:
-                victory = True
-                victory_message = "Victoire Ennemi!"
-            elif not any(unit.color == PLAYER_COLOR for unit in units):
-                victory = True
-                victory_message = "Victoire Ennemi!"
-            elif not any(unit.color == ENEMY_COLOR for unit in units):
-                victory = True
-                victory_message = "Victoire Joueur!"
-                
-            temps_debut_tour = pygame.time.get_ticks() // 1000
+            # Calcul du temps écoulé depuis le début du tour
+            temps_actuel = pygame.time.get_ticks() // 1000
+            temps_ecoule = temps_actuel - temps_debut_tour
+            
+            if unit_moved or temps_ecoule >= temps_reflexion:
+                for unit in units_to_move:
+                    unit.moved = False  # Réinitialiser l'indicateur de mouvement
+                    unit.attacked_this_turn = False  # Réinitialiser l'indicateur d'attaque
+                player_turn = not player_turn
+                units_to_move = [unit for unit in units if (unit.color == PLAYER_COLOR if player_turn else unit.color == ENEMY_COLOR)]
+                player_score_turn, enemy_score_turn = calculate_scores(units, objectives)
+                player_score += player_score_turn
+                enemy_score += enemy_score_turn
+
+                if player_score >= 50:
+                    victory = True
+                    victory_message = "Victoire Joueur!"
+                elif enemy_score >= 50:
+                    victory = True
+                    victory_message = "Victoire Ennemi!"
+                elif not any(unit.color == PLAYER_COLOR for unit in units):
+                    victory = True
+                    victory_message = "Victoire Ennemi!"
+                elif not any(unit.color == ENEMY_COLOR for unit in units):
+                    victory = True
+                    victory_message = "Victoire Joueur!"
+
+                temps_debut_tour = pygame.time.get_ticks() // 1000
+                pygame.display.flip()
+                pygame.time.wait(2000)
+
+        screen.fill((0, 0, 0))
+        draw_map(screen, game_map, tile_size)
+        draw_objectives(screen, objectives, tile_size)
+        
+        for unit in units:
+            unit.draw(screen, units, objectives)
+
+        draw_turn_indicator(screen, player_turn)
+        draw_end_turn_button(screen, width, height, interface_height)
+        draw_unit_attributes(screen, selected_unit, width, height, interface_height)
+        draw_scores(screen, player_score, enemy_score, width, height)
+        dessiner_minuteur(screen, temps_reflexion - temps_ecoule)
+
+        if victory:
+            img = pygame.image.load("jeuPython/victory.jpg")
+            img = pygame.transform.scale(img, (width, height))
+            screen.blit(img, (0, 0))
+            draw_victory_message(screen, victory_message, width, height)
             pygame.display.flip()
+            pygame.time.wait(3000)
+            running = False
 
-    screen.fill((0, 0, 0))
-    draw_map(screen, game_map, tile_size)
-    draw_objectives(screen, objectives, tile_size)
-    
-    for unit in units:
-        unit.draw(screen, units, objectives)
-
-    draw_turn_indicator(screen, player_turn)
-    draw_end_turn_button(screen, width, height, interface_height)
-    draw_unit_attributes(screen, selected_unit, width, height, interface_height)
-    draw_scores(screen, player_score, enemy_score, width, height)
-    dessiner_minuteur(screen, temps_reflexion - temps_ecoule)
-
-    if victory:
-        # Ajout d'une image pour le cas de la victoire
-        img = pygame.image.load("jeuPython/victory.jpg") # Chargement de l'image feu artifice
-        img = pygame.transform.scale(img, (width, height)) # Dimension de l'image
-        screen.blit(img, (0, 0)) # Insertion de l'image dans l'écran jeu
-        draw_victory_message(screen, victory_message, width, height)
         pygame.display.flip()
-        pygame.time.wait(5000)
-        running = False
+
+    pygame.quit()
+
+#Lancement de la fênetre Menu
+screen = pygame.display.set_mode((250, 100 + 50))
+pygame.display.set_caption("Menu Principal")
+font = pygame.font.SysFont("Times New Roman", 32)
+menu_options = ["PVP", "IA"]
+running = True
+
+while running:
+    screen.fill((0, 0, 0))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            x, y = event.pos
+            for i, option in enumerate(menu_options):
+                text = font.render(option, True, (255, 255, 255))
+                rect = text.get_rect(center=(125, 50  + i * 60))
+                if rect.collidepoint(x, y):
+                    if i == 0:
+                        creation_jeu(False) #Lancement du jeu dans le cas d'un Joueur contre Joueur
+                    elif i == 1:
+                        creation_jeu(True) #Lancement du jeu dans le cas d'un Joueur contre IA
+                    running = False
+
+    for i, option in enumerate(menu_options):
+        color = (238,130,238) if i == 0 else (255, 255, 255)
+        text = font.render(option, True, color)
+        rect = text.get_rect(center=(125, 50  + i * 60))
+        pygame.draw.rect(screen, (238,130,238) if i == 1 else (255, 255, 255), rect.inflate(20, 20), 3)
+        screen.blit(text, rect.topleft)
 
     pygame.display.flip()
 
